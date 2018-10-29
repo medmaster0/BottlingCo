@@ -4,6 +4,8 @@ export (PackedScene) var Grinder
 export (PackedScene) var Conveyor
 export (PackedScene) var Fruit
 export (PackedScene) var Wine
+export (PackedScene) var Worker
+export (PackedScene) var Drop
 
 # class member variables go here, for example:
 # var a = 2
@@ -56,12 +58,12 @@ func _ready():
 	for i in range(1,conveyor_length):
 		var conveyor = Conveyor.instance()
 		conveyor.position = $TileMap.map_to_world( Vector2(conveyor_distance+i, conveyor_height-2) )
-		conveyor.modulate = conveyor_color
+		conveyor.get_child(0).modulate = conveyor_color
+		#Also, play the animations
+		conveyor.get_child(0).playing = true
+		conveyor.get_child(1).playing = true
 		add_child(conveyor)
 		conveyors.append(conveyor)
-		
-#	var conveyor_position = Vector2(20,20)
-#	print(conveyor_position.x)
 	
 	#Fruit
 	var fruit = Fruit.instance()
@@ -72,11 +74,22 @@ func _ready():
 	
 	#Wine
 	var wine = Wine.instance()
-	wine.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height + 4)  )
+	wine.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height + 6)  )
 	wine.get_child(0).modulate = fruit.get_child(0).modulate
 	wine.get_child(1).modulate = Color(randf(), randf(), randf())
 	add_child(wine)
-	pass
+	
+	#Worker
+	var worker = Worker.instance()
+	worker.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height - 8)  )
+	worker.get_child(1).modulate = Color(randf(), randf(), randf())
+	add_child(worker)
+	
+	#Drop
+	var drop = Drop.instance()
+	drop.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height + 3)  )
+	drop.get_child(0).modulate = fruit.get_child(0).modulate
+	add_child(drop)
 
 func _process(delta):
 	# Called every frame. Delta is time since last frame.
