@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/conveySeco copy.png-adc6ba5a68a153c30e533986759d28bb.stex"
+path="res://.import/wineSeco.png-b56cc0717dabf6706c9ba0b23d66ee46.stex"
 
 [deps]
 
-source_file="res://tiles/conveySeco copy.png"
-dest_files=[ "res://.import/conveySeco copy.png-adc6ba5a68a153c30e533986759d28bb.stex" ]
+source_file="res://tiles/wineSeco.png"
+dest_files=[ "res://.import/wineSeco.png-b56cc0717dabf6706c9ba0b23d66ee46.stex" ]
 
 [params]
 

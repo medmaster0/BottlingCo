@@ -1,15 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://Grinder.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Conveyor.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tiles/blank.png" type="Texture" id=4]
+[ext_resource path="res://Fruit.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Wine.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tiles/blank.png" type="Texture" id=6]
 
-[node name="Game" type="Node" index="0"]
+[node name="Game" type="Node"]
 
 script = ExtResource( 1 )
 Grinder = ExtResource( 2 )
 Conveyor = ExtResource( 3 )
+Fruit = ExtResource( 4 )
+Wine = ExtResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="0"]
 
@@ -22,7 +26,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="Background" type="Sprite" parent="CanvasLayer" index="0"]
 
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 
 [node name="TileMap" type="TileMap" parent="." index="1"]
 

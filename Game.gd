@@ -2,6 +2,8 @@ extends Node
 
 export (PackedScene) var Grinder
 export (PackedScene) var Conveyor
+export (PackedScene) var Fruit
+export (PackedScene) var Wine
 
 # class member variables go here, for example:
 # var a = 2
@@ -11,8 +13,7 @@ export (PackedScene) var Conveyor
 var grinder
 var grinder2
 var background_color
-var conveyor
-var conveyor2
+var conveyors = [] #list containing all of the conveyor tiles
 
 
 func _ready():
@@ -27,10 +28,10 @@ func _ready():
 	add_child(grinder2)
 	#Move to right third of screen (dir)
 	#And a random ppoint in the top (10% to 60%) of the height of the screen
-	var grinder_height = (randf()*0.5 + 0.1 ) * get_viewport().size.y
+	var grinder_height = (randf()*0.5 + 0.25 ) * get_viewport().size.y
 	var grinder_distance =  (0.6) * get_viewport().size.x
-	grinder.position = Vector2(grinder_distance , grinder_height )
-	grinder2.position = Vector2(grinder_distance - 24 , grinder_height ) #Move it to the right (so it's flush)
+	grinder.position = Vector2(grinder_distance + 3 , grinder_height ) #add 3 to center the pixels...
+	grinder2.position = Vector2(grinder_distance - 24 + 3 , grinder_height ) #Move it to the right (so it's flush)
 	#Also want to flip the direction of grinder2
 	grinder2.get_child(1).set_flip_h(true)
 	grinder2.get_child(0).set_flip_h(true)
@@ -45,24 +46,36 @@ func _ready():
 	$CanvasLayer/Background.scale = get_viewport().size
 	$CanvasLayer/Background.set_modulate( background_color )
 	
-	#Conveoyr Belts
+	#Conveyor Belts
 	var conveyor_color = Color(randf(), randf(), randf())
-	#$Conveyor.position = Vector2(500,500)
-	conveyor = Conveyor.instance()
-	#conveyor.get_child(0).offset = Vector2(500,500) #WORKS!
-	#conveyor.get_child(0).get_child(0).position = Vector2(500,grinder_height) #Also WORKS!
-	#conveyor.position = Vector2(500,grinder_height)
-	conveyor.position = $TileMap.map_to_world(Vector2(20,20))
-	conveyor.modulate = conveyor_color
-	add_child(conveyor)
+	#Positioning - near our grinder 
+	#Positions in TileMap Coords!!
+	var conveyor_height = $TileMap.world_to_map(  Vector2(0,grinder_height)   ).y
+	var conveyor_distance = $TileMap.world_to_map(   Vector2(grinder_distance,0)   ).x
+	var conveyor_length = 20
+	for i in range(1,conveyor_length):
+		var conveyor = Conveyor.instance()
+		conveyor.position = $TileMap.map_to_world( Vector2(conveyor_distance+i, conveyor_height-2) )
+		conveyor.modulate = conveyor_color
+		add_child(conveyor)
+		conveyors.append(conveyor)
+		
+#	var conveyor_position = Vector2(20,20)
+#	print(conveyor_position.x)
 	
-	#Second conveyvey
-	conveyor2 = Conveyor.instance()
-	conveyor2.position = $TileMap.map_to_world(Vector2(21,20))
-	conveyor2.modulate = conveyor_color
-	add_child(conveyor2)
+	#Fruit
+	var fruit = Fruit.instance()
+	fruit.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height - 3)  )
+	fruit.get_child(0).modulate = Color(randf(), randf(), randf())
+	fruit.get_child(1).modulate = generate_brown()
+	add_child(fruit)	
 	
-	
+	#Wine
+	var wine = Wine.instance()
+	wine.position = $TileMap.map_to_world( Vector2(conveyor_distance, conveyor_height + 4)  )
+	wine.get_child(0).modulate = fruit.get_child(0).modulate
+	wine.get_child(1).modulate = Color(randf(), randf(), randf())
+	add_child(wine)
 	pass
 
 func _process(delta):
@@ -79,3 +92,22 @@ func _process(delta):
 	#conveyor.get_child(0).get_child(0).motion_scale = Vector2(0.5,0.5)
 	
 	pass
+	
+	
+#Returns a random shade of brown
+func generate_brown():
+	var brown_color #The color we will be returning
+	
+	var r = (0.2*randf()) + 0.6
+	var g = r - (0.2*randf()) - (0.2)
+	var b = randf()*g
+	
+	brown_color = Color(r,g,b)
+	
+	return(brown_color)
+	
+	
+	
+	
+	
+	
