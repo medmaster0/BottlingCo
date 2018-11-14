@@ -14,6 +14,10 @@ config/name="BottlingCo"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
+[gui]
+
+theme/custom_font="res://resources/receipt_font.tres"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

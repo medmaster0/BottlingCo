@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://things/Wine.gd" type="Script" id=1]
+[ext_resource path="res://things/Conveyor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tiles/winePrim.png" type="Texture" id=3]
+[ext_resource path="res://tiles/wineSeco.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 4 )
+
+[node name="Wine" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+Conveyor = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 3 )
+
+[node name="Sprite2" type="Sprite" parent="." index="1"]
+
+texture = ExtResource( 4 )
+
+[node name="Area2D" type="Area2D" parent="." index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+
+position = Vector2( 0, 3 )
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]
+
+
